@@ -17,8 +17,8 @@ export default function Home() {
     setMounted(true);
   }, []);
 
-  const LIVE_URL = `https://nonparabolic-undiametrically-knox.ngrok-free.dev/memfs/dfcef8f4-8e81-47b9-8185-1fec719c21fe.m3u8`;
-  const POSTER_URL = `${NGROK_URL}/memfs/${STREAM_ID}/snapshot.jpg`;
+  const LIVE_URL = `${NGROK_URL}/${STREAM_ID}.m3u8`;
+  const POSTER_URL = `${NGROK_URL}/${STREAM_ID}/snapshot.jpg`;
 
   if (!mounted) return <div className="bg-black min-h-screen" />;
 

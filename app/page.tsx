@@ -5,9 +5,8 @@ import MuxPlayer from '@mux/mux-player-react';
 export default function Home() {
   const IP = "192.168.1.2";
   const ID = "dfcef8f4-8e81-47b9-8185-1fec719c21fe";
-  const LIVE_URL ="http://102.207.8.62:8080/memfs/dfcef8f4-8e81-47b9-8185-1fec719c21fe.m3u8";
-  const POSTER = `http://127.0.0.1:8080/memfs/${ID}/snapshot.jpg`;
-
+ const LIVE_URL = "http://102.207.8.62:8080/memfs/dfcef8f4-8e81-47b9-8185-1fec719c21fe.m3u8";
+ const POSTER = `http://102.207.8.62:8080/memfs/${ID}/snapshot.jpg`;
   return (
     <main className="min-h-screen bg-[#141414] text-white overflow-x-hidden">
       

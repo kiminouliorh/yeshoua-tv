@@ -6,7 +6,7 @@ import MuxPlayer from '@mux/mux-player-react';
  * CONFIGURATION FACILE
  * Tu as juste à changer cette ligne quand tu relances Ngrok !
  */
-const NGROK_URL = "https://nonparabolic-undiametrically-knox.ngrok-free.dev "; 
+const NGROK_URL = "https://nonparabolic-undiametrically-knox.ngrok-free.dev"; 
 const STREAM_ID = "dfcef8f4-8e81-47b9-8185-1fec719c21fe";
 
 export default function Home() {

@@ -29,7 +29,7 @@ export default function Home() {
       <nav className="fixed top-0 w-full z-50 px-6 py-4 flex justify-between items-center bg-black/40 backdrop-blur-xl border-b border-white/5">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 bg-red-600 rounded-lg flex items-center justify-center font-black text-white shadow-lg shadow-red-600/20">Y</div>
-          <h1 className="text-xl font-black tracking-tighter text-white">YESHUA <span className="text-red-600">TV</span></h1>
+          <h1 className="text-xl font-black tracking-tighter text-white">YESHOUA <span className="text-red-600">TV</span></h1>
         </div>
         <div className="hidden md:flex gap-6 text-xs uppercase font-bold tracking-widest text-zinc-400">
           <a href="#" className="text-white border-b-2 border-red-600 pb-1">Direct</a>

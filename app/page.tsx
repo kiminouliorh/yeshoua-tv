@@ -33,7 +33,7 @@ export default function Home() {
   if (!mounted) return null;
 
   return (
-    <main className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-600/30">
+    <main className="min-h-screen bg-[#050505] text-white font-sans selection:bg-red-600/30 overflow-x-hidden">
       
       {/* 1. SPLASH SCREEN */}
       {loading && (
@@ -44,20 +44,22 @@ export default function Home() {
         </div>
       )}
 
-      {/* 2. NAVBAR */}
-      <nav className="fixed top-0 w-full z-40 px-6 py-4 flex justify-between items-center bg-black/60 backdrop-blur-md border-b border-white/5">
-        <h1 className="text-xs font-black tracking-widest uppercase italic">Yeshoua <span className="text-red-600">TV</span></h1>
-        <div className="bg-red-600/10 px-2.5 py-1 rounded-full border border-red-600/20 flex items-center gap-1.5">
-          <div className="h-1 w-1 rounded-full bg-red-600 animate-pulse"></div>
-          <span className="text-[8px] font-black uppercase text-red-500 tracking-tighter">Live</span>
-        </div>
-      </nav>
+      {/* 2. NAVBAR (Masquée sur l'onglet compte pour respecter le design myNCI) */}
+      {currentTab !== 'compte' && (
+        <nav className="fixed top-0 w-full z-40 px-6 py-4 flex justify-between items-center bg-black/60 backdrop-blur-md border-b border-white/5">
+          <h1 className="text-xs font-black tracking-widest uppercase italic">Yeshoua <span className="text-red-600">TV</span></h1>
+          <div className="bg-red-600/10 px-2.5 py-1 rounded-full border border-red-600/20 flex items-center gap-1.5">
+            <div className="h-1 w-1 rounded-full bg-red-600 animate-pulse"></div>
+            <span className="text-[8px] font-black uppercase text-red-500 tracking-tighter">Live</span>
+          </div>
+        </nav>
+      )}
 
-      <div className="pt-24 pb-32 px-4 max-w-5xl mx-auto">
+      <div className={`${currentTab === 'compte' ? '' : 'pt-24'} pb-32 px-0 max-w-5xl mx-auto`}>
         
         {/* --- PAGE DIRECT --- */}
         {currentTab === 'direct' && (
-          <section className="animate-in fade-in duration-500">
+          <section className="animate-in fade-in duration-500 px-4">
             <div className="relative mb-12">
               <div className="rounded-[2rem] overflow-hidden border border-white/10 bg-zinc-900 aspect-video shadow-2xl">
                 <MuxPlayer streamType="live" src={`${NGROK_BASE}/memfs/${STREAM_ID}.m3u8`} poster={`${NGROK_BASE}/memfs/${STREAM_ID}/snapshot.jpg`} autoPlay="any" className="w-full h-full object-cover" />
@@ -67,14 +69,14 @@ export default function Home() {
                 <span className="text-[10px] font-black uppercase tracking-tighter">Partager</span>
               </button>
             </div>
-            <h2 className="text-2xl font-black uppercase tracking-tighter italic italic">Moment de Grâce</h2>
+            <h2 className="text-2xl font-black uppercase tracking-tighter italic">Moment de Grâce</h2>
             <p className="text-zinc-600 text-[9px] font-bold uppercase tracking-[0.3em] mt-2 italic">Abidjan • Ministère de la Foi</p>
           </section>
         )}
 
         {/* --- PAGE PROGRAMME --- */}
         {currentTab === 'programme' && (
-          <section className="animate-in slide-in-from-right duration-500">
+          <section className="animate-in slide-in-from-right duration-500 px-4">
             <h2 className="text-2xl font-black uppercase italic mb-8">Planning de la semaine</h2>
             <div className="flex gap-2 overflow-x-auto pb-6 no-scrollbar">
               {jours.map(j => (
@@ -94,7 +96,7 @@ export default function Home() {
 
         {/* --- PAGE REPLAYS --- */}
         {currentTab === 'replays' && (
-          <section className="animate-in slide-in-from-left duration-500">
+          <section className="animate-in slide-in-from-left duration-500 px-4">
             <h2 className="text-2xl font-black uppercase italic mb-8">Archives & Replays</h2>
             <div className="grid grid-cols-2 gap-4">
               {[1, 2].map(i => (
@@ -109,13 +111,45 @@ export default function Home() {
           </section>
         )}
 
-        {/* --- PAGE COMPTE --- */}
+        {/* --- PAGE COMPTE STYLE MYNCI --- */}
         {currentTab === 'compte' && (
-          <section className="animate-in fade-in duration-500 flex flex-col items-center text-center">
-            <div className="w-24 h-24 bg-zinc-900 rounded-full border border-white/10 flex items-center justify-center mb-6 text-3xl">👤</div>
-            <h2 className="text-2xl font-black uppercase tracking-tighter mb-2 italic">Mon Compte</h2>
-            <p className="text-zinc-500 text-[10px] font-bold uppercase tracking-widest max-w-xs">Espace personnel en cours de création. Bientôt vos favoris et intentions de prière ici.</p>
-            <button className="mt-10 bg-white/5 border border-white/10 px-8 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest text-zinc-400">Se connecter</button>
+          <section className="min-h-screen bg-gradient-to-b from-[#1d4ed8] via-[#1e3a8a] to-black flex flex-col items-center justify-center px-10 animate-in fade-in duration-700 text-center">
+            
+            <div className="mb-14">
+               <h1 className="text-4xl font-black italic tracking-tighter text-white drop-shadow-2xl">
+                 YESHOUA<span className="text-blue-300">TV</span>
+               </h1>
+            </div>
+
+            <h2 className="text-2xl font-bold leading-snug mb-16 text-white">
+              Connectez-vous pour<br/>profiter de tout Yeshoua TV
+            </h2>
+
+            <div className="space-y-10 mb-16 text-left w-full max-w-xs">
+              <div className="flex items-center gap-6">
+                <span className="text-3xl">📺</span>
+                <p className="text-sm font-medium leading-tight text-white">Vivez une <span className="text-blue-200 font-black">nouvelle expérience</span> de la télé</p>
+              </div>
+
+              <div className="flex items-center gap-6">
+                <span className="text-3xl">🏠</span>
+                <p className="text-sm font-medium leading-tight text-white">Suivez nous <span className="text-blue-200 font-black">en direct</span> depuis chez vous</p>
+              </div>
+
+              <div className="flex items-center gap-6">
+                <span className="text-3xl">💙</span>
+                <p className="text-sm font-medium leading-tight text-white">Découvrez nos <span className="text-blue-200 font-black">programmes inédits</span> à tous moments</p>
+              </div>
+            </div>
+
+            <div className="w-full max-w-sm space-y-4 pb-20">
+              <button className="w-full bg-[#0ea5e9] hover:bg-blue-400 text-white font-black py-4 rounded-full text-base shadow-2xl transition-all active:scale-95">
+                Se connecter
+              </button>
+              <button className="w-full bg-transparent border-2 border-white text-white font-black py-4 rounded-full text-base transition-all active:scale-95">
+                Créer un compte
+              </button>
+            </div>
           </section>
         )}
       </div>
@@ -139,51 +173,7 @@ export default function Home() {
         </div>
       )}
 
-       {/* --- ONGLET COMPTE (STYLE MYNCI IDENTIQUE À L'IMAGE) --- */}
-        {currentTab === 'compte' && (
-          <section className="min-h-screen bg-gradient-to-b from-[#1d4ed8] via-[#1e3a8a] to-black flex flex-col items-center justify-center px-10 animate-in fade-in duration-700 text-center">
-            
-            <div className="mb-14">
-               <h1 className="text-4xl font-black italic tracking-tighter text-white drop-shadow-2xl">
-                 YESHOUA<span className="text-blue-300">TV</span>
-               </h1>
-            </div>
-
-            <h2 className="text-2xl font-bold leading-snug mb-16 text-white">
-              Connectez-vous pour<br/>profiter de tout Yeshoua TV
-            </h2>
-
-            {/* Liste des bénéfices (Exactement comme l'image) */} 
-            <div className="space-y-10 mb-16 text-left w-full max-w-xs">
-              <div className="flex items-center gap-6">
-                <span className="text-3xl">📺</span>
-                <p className="text-sm font-medium leading-tight">Vivez une <span className="text-blue-200 font-black">nouvelle expérience</span> de la télé</p>
-              </div>
-
-              <div className="flex items-center gap-6">
-                <span className="text-3xl">🏠</span>
-                <p className="text-sm font-medium leading-tight">Suivez nous <span className="text-blue-200 font-black">en direct</span> depuis chez vous</p>
-              </div>
-
-              <div className="flex items-center gap-6">
-                <span className="text-3xl">💙</span>
-                <p className="text-sm font-medium leading-tight">Découvrez nos <span className="text-blue-200 font-black">programmes inédits</span> à tous moments</p>
-              </div>
-            </div>
-
-            {/* Boutons d'action arrondis */}
-            <div className="w-full max-w-sm space-y-4">
-              <button className="w-full bg-[#0ea5e9] hover:bg-blue-400 text-white font-black py-4 rounded-full text-base shadow-2xl transition-all active:scale-95">
-                Se connecter
-              </button>
-              <button className="w-full bg-transparent border-2 border-white text-white font-black py-4 rounded-full text-base transition-all active:scale-95">
-                Créer un compte
-              </button>
-            </div>
-          </section>
-        )}
-
-      {/* NAVIGATION BASSE (4 BOUTONS) */}
+      {/* NAVIGATION BASSE */}
       <nav className="fixed bottom-6 left-1/2 -translate-x-1/2 w-[90%] max-w-md z-50">
         <div className="bg-zinc-900/95 backdrop-blur-3xl border border-white/10 rounded-2xl p-1.5 flex justify-around shadow-2xl ring-1 ring-white/5 items-center">
           <button onClick={() => setCurrentTab('programme')} className={`flex flex-col items-center gap-0.5 px-3 py-1.5 transition-all ${currentTab === 'programme' ? 'text-white' : 'text-zinc-600'}`}>
@@ -201,7 +191,7 @@ export default function Home() {
             <span className="text-[7px] font-black uppercase">Archives</span>
           </button>
 
-          <button onClick={() => setCurrentTab('compte')} className={`flex flex-col items-center gap-0.5 px-3 py-1.5 transition-all ${currentTab === 'compte' ? 'text-white' : 'text-zinc-600'}`}>
+          <button onClick={() => setCurrentTab('compte')} className={`flex flex-col items-center gap-0.5 px-3 py-1.5 transition-all ${currentTab === 'compte' ? 'text-blue-400 scale-110' : 'text-zinc-600'}`}>
             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="2.5"><path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
             <span className="text-[7px] font-black uppercase tracking-tighter">Compte</span>
           </button>

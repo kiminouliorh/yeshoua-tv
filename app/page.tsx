@@ -7,7 +7,7 @@ import MuxPlayer from '@mux/mux-player-react';
  * On sépare l'adresse de base et l'ID du flux pour éviter les erreurs.
  */
 const NGROK_BASE = "https://nonparabolic-undiametrically-knox.ngrok-free.dev"; 
-const STREAM_ID = "dfcef8f4-8e81-47b9-8185-1fec719c21fe";
+const STREAM_ID = "dfcef8f4-8e81-47b9-8185-1fec719c21fe.m3u8";
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);

@@ -1,48 +1,59 @@
 "use client"
 import React, { useState, useEffect } from 'react';
 import MuxPlayer from '@mux/mux-player-react';
-import { Tv, User } from 'lucide-react';
+import { initializeApp, getApps } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword, onAuthStateChanged } from 'firebase/auth';
+
+const firebaseConfig = {
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
+};
+
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps()[0];
+const auth = getAuth(app);
 
 export default function Home() {
-  const [mounted, setMounted] = useState(false);
-  const [tab, setTab] = useState('direct');
+  const [user, setUser] = useState<any>(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-  useEffect(() => { setMounted(true); }, []);
-  if (!mounted) return null;
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (u) => setUser(u));
+    return () => unsubscribe();
+  }, []);
+
+  const handleSignUp = async (e: any) => {
+    e.preventDefault();
+    try {
+      await createUserWithEmailAndPassword(auth, email, password);
+      alert("Compte Yeshoua TV créé !");
+    } catch (err: any) { alert(err.message); }
+  };
 
   return (
-    <main className="min-h-screen bg-black text-white flex flex-col items-center p-6">
-      <div className="mb-10 text-center">
-        <h1 className="text-4xl font-black italic tracking-tighter">YESHOUA <span className="text-red-600">TV</span></h1>
-        <p className="text-[10px] text-zinc-500 tracking-[0.5em] uppercase mt-2">Côte d'Ivoire</p>
-      </div>
+    <main className="min-h-screen bg-black text-white p-6 flex flex-col items-center">
+      <h1 className="text-3xl font-black italic mb-10 text-red-600">YESHOUA TV</h1>
       
-      <div className="w-full max-w-2xl bg-zinc-900 rounded-[2.5rem] p-4 shadow-2xl border border-white/5 shadow-red-900/10">
-        {tab === 'direct' ? (
-          <div className="aspect-video rounded-[2rem] overflow-hidden bg-black">
-            <MuxPlayer 
-              streamType="live" 
-              src="https://nonparabolic-undiametrically-knox.ngrok-free.dev/memfs/dfcef8f4-8e81-47b9-8185-1fec719c21fe.m3u8"
-              autoPlay="any"
-              className="w-full h-full"
-            />
-          </div>
-        ) : (
-          <div className="py-24 text-center">
-            <User className="mx-auto mb-4 text-zinc-700" size={48} />
-            <p className="text-zinc-500 text-sm font-medium">Espace membre bientôt disponible</p>
-          </div>
-        )}
+      <div className="w-full max-w-2xl bg-zinc-900 rounded-[2.5rem] p-4 mb-10 border border-white/5 shadow-2xl">
+        <MuxPlayer streamType="live" src="https://nonparabolic-undiametrically-knox.ngrok-free.dev/memfs/dfcef8f4-8e81-47b9-8185-1fec719c21fe.m3u8" />
       </div>
 
-      <nav className="fixed bottom-10 bg-zinc-900/80 backdrop-blur-lg border border-white/10 p-2 rounded-2xl flex gap-4">
-        <button onClick={() => setTab('direct')} className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-bold transition-all ${tab === 'direct' ? 'bg-white text-black' : 'text-zinc-400'}`}>
-          <Tv size={16} /> DIRECT
-        </button>
-        <button onClick={() => setTab('compte')} className={`flex items-center gap-2 px-6 py-3 rounded-xl text-xs font-bold transition-all ${tab === 'compte' ? 'bg-white text-black' : 'text-zinc-400'}`}>
-          <User size={16} /> COMPTE
-        </button>
-      </nav>
+      {!user ? (
+        <form onSubmit={handleSignUp} className="bg-white/5 backdrop-blur-md p-8 rounded-[2rem] w-full max-w-md border border-white/10">
+          <h2 className="text-xl font-bold mb-6 text-center">Devenir Abonné</h2>
+          <input className="w-full p-4 mb-3 bg-black border border-white/10 rounded-xl" placeholder="Email" onChange={e => setEmail(e.target.value)} />
+          <input type="password" className="w-full p-4 mb-6 bg-black border border-white/10 rounded-xl" placeholder="Mot de passe" onChange={e => setPassword(e.target.value)} />
+          <button className="w-full bg-red-600 py-4 rounded-xl font-black uppercase tracking-widest hover:bg-red-700 transition-all">S'inscrire</button>
+        </form>
+      ) : (
+        <div className="bg-green-600/20 p-6 rounded-2xl border border-green-500/50">
+          <p className="font-bold">✨ Connecté : {user.email}</p>
+        </div>
+      )}
     </main>
   );
 }

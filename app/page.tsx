@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import MuxPlayer from '@mux/mux-player-react';
 // Importation des outils Firebase que nous avons installés
-import { auth, db } from './lib/firebase'; 
+import { auth, db } from './lib/firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged, signOut, updateProfile } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
